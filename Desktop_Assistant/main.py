@@ -1,4 +1,5 @@
 import speech_recognition as sr
+import pyaudio
 import win32com.client
 import webbrowser
 
@@ -13,14 +14,15 @@ def say(s):
 # To take command from microphone.
 def takecommand():
     r = sr.Recognizer()
-    with sr.Microphone() as source:
+    with sr.Microphone(device_index=0) as source:
         r.pause_threshold = 1
         audio = r.listen(source)
         try:
-            query = r.recognize_google(audio, language="en-in")
+            query = r.recognize_whisper(audio, language="en-in")     # Problem here.
             print(f"User said: {query}")
             return query
         except Exception as e:
+            print(e)
             return "Some Error Occurred. Sorry from  Assistant."
 
 
@@ -29,8 +31,10 @@ print("Listening....")
 say("Hello I am your A.I. based desktop  assistant.")
 while True:
     query = takecommand()
-    if "Open YouTube" in query.lower():
-        say("Opening youtube sir...")
-        webbrowser.open("https://youtube.com")
+   #if "Open YouTube".lower() in query.lower():
+    say("Opening youtube sir...")
+    say(query)
+    #webbrowser.open("https://youtube.com")
+
 
 # say(query)
